@@ -13,68 +13,63 @@ songs = [
 ]
 
 
-
 def help
-  help = <<-HELP
-I accept the following commands:
+  puts "I accept the following commands:
 - help : displays this help message
 - list : displays a list of songs you can play
 - play : lets you choose a song to play
-- exit : exits this program
-HELP
-
-  puts help
+- exit : exits this program"
 end
 
-help 
-
-def list(songs) 
-  songs.each_with_index { |item, index|
-    puts "#{index+1}. #{item}" }
-end 
-
-list(songs)
+def list(songs)
+  songs.each_with_index do |song, track|
+    puts "#{track + 1}. #{song}"
+  end
+end
 
 def play(songs)
   puts "Please enter a song name or number:"
-  user_response = gets.downcase.chomp 
-  
-  if (1..9).to_a.include?(user_response.to_i)
-    puts "Playing #{songs[user_response.to_i - 1]}"
-    elsif songs.include?(user_response)
-    puts "Playing #{user_response}"
-  else 
-    puts "Invalid input, please try again"
-  end 
-end 
+  input = gets.strip
+  number = input.to_i - 1
 
-play(songs)
+  if input == "exit"
+    exit_jukebox
+  elsif number < 0 && songs.include?(input)
+    index = songs.index(input)
+    puts "Playing #{songs[index]}"
+  elsif number >= 0 && songs[number] != nil
+    puts "Playing #{songs[number]}"
+  else
+    puts "Invalid input, please try again"
+  end
+end
 
 def exit_jukebox
-  puts "Goodbye"
-end 
+  puts "Goodbye!"
+end
 
 def run(songs)
-  #help
-  command = "" 
-  while command  
+  methods = ["help", "list", "play", "exit"]
+  help
   puts "Please enter a command:"
-  command = gets.downcase.strip  
-  case command 
-    when 'list'
-      list(songs)
-      when 'play'
-        list(songs)
-        play(songs)
-      when 'help'
-        help 
-      when 'exit'
-        exit_jukebox
-        break 
-      else 
-        help 
-      end 
-    end 
-  end 
+  input = gets.strip
 
-run(songs)
+  while !methods.include?(input)
+    puts "Please enter a command:"
+    input = gets.strip
+  end
+
+  case input
+  when "help"
+    help
+  when "play"
+    play(songs)
+  when "list"
+    list(songs)
+  when "exit"
+    exit_jukebox
+    exit
+  end
+
+  run(songs)
+end
