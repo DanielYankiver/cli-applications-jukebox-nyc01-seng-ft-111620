@@ -21,18 +21,21 @@ def help
 end
 
 def list(songs)
-  songs.each_with_index do |song, index|
-    puts "#{index + 1}. #{song}"
+  new = []
+  songs.each_with_index do |s,i|
+    n = i.to_i + 1
+    new << n.to_s + ". " + s
   end
+  puts new
+  new
 end
 
 def play(songs)
   puts "Please enter a song name or number:"
-  input = gets.chomp
-  if ((1..songs.size).include? input.to_i)
-    puts "Playing #{songs[input.to_i - 1]}"
-  elsif songs.include?(input)
-    puts "Playing #{input}"
+  user = gets.chomp
+  str = list(songs).join(" ")
+  if str.include?(user)
+    puts "Playing " + user
   else
     puts "Invalid input, please try again"
   end
@@ -43,19 +46,22 @@ def exit_jukebox
 end
 
 def run(songs)
-  puts "Please enter a command:"
-  loop do
-    input = gets.chomp
-    case input
-    when "help"
-      help
-    when "list"
-      list(songs)
-    when "play"
-      play(songs)
-    when "exit"
-      exit_jukebox
-      break
+  help
+  while true
+    puts "Please enter a command:"
+    command = gets.chomp
+    case command
+      when "list"
+        list(songs)
+      when "play"
+        play(songs)
+      when "help"
+        help
+      when "exit"
+        exit_jukebox
+        break
+      else
+        help
     end
   end
 end
