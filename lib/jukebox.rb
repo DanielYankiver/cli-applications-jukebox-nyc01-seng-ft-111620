@@ -17,8 +17,7 @@ def help
   - help : displays this help message
   - list : displays a list of songs you can play
   - play : lets you choose a song to play
-  - exit : exits this program"
-end
+  - exit : exits this program
 
 def list(songs)
   songs.each_with_index do |song, index|
